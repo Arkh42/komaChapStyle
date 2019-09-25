@@ -1,0 +1,118 @@
+
+%%        %%
+% PREAMBLE %
+% ======== %
+
+
+
+% Document class
+% --------------
+
+% Loading the class
+\documentclass[%
+	paper=portrait, paper=A4,%
+	fontsize=11pt,%
+	oneside% open=right,%
+]{scrbook}
+
+
+% Font
+% ----
+
+\usepackage{lmodern}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+
+% Chapter headings style
+% ----------------------
+
+\usepackage[chapterstyle=default]{komaChapStyle}
+
+
+% Language and typography
+% -----------------------
+
+\usepackage[main=english, french]{babel}
+
+\usepackage[autostyle=true]{csquotes}
+
+
+% Text generator
+% --------------
+
+\usepackage{lipsum}
+
+
+% Hyperlinks and PDF metadata
+% ---------------------------
+
+\usepackage[%
+	hidelinks,%				hides links (removing color and border)
+	pdfusetitle,%			uses the content of \author{}... for metadata
+	pdfdisplaydoctitle,%	displays document title instead of file name in title bar
+]{hyperref}
+
+
+
+
+%%        %%
+% DOCUMENT %
+% ======== %
+
+
+
+% Metadata
+% --------
+
+\title{Chapter styles for KOMA-Script}
+\subtitle{A package}
+
+\author{Ir. Alexandre \textsc{Quenon}}
+
+\date{\today}
+
+
+% Content
+% -------
+\begin{document}
+
+
+\maketitle
+
+
+\frontmatter
+
+	\tableofcontents
+
+
+\mainmatter
+
+	\chapter{A numbered chapter with ToC entry}
+		\lipsum[1-9]
+	\chapter{A second numbered chapter with ToC entry}
+		\lipsum[1-3]
+	\addchap{An unnumbered chapter with ToC entry}
+		\lipsum[1-9]
+	\chapter*{An unnumbered chapter without ToC entry}
+		\lipsum[1-9]
+
+
+\appendix
+
+	\chapter{A numbered appendix with ToC entry}
+		\lipsum[1-9]
+	\addchap{An unnumbered appendix with ToC entry}
+		\lipsum[1-9]
+	\chapter*{An unnumbered appendix without ToC entry}
+		\lipsum[1-9]
+
+
+
+\backmatter
+
+	%
+
+
+\end{document}

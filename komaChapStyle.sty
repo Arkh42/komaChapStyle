@@ -10,8 +10,8 @@
 \NeedsTeXFormat{LaTeX2e}
 
 % Package declaration
-% -------------------   *** Replace 'package_template__keyval_option' with the file name without the .sty extension ***
-\ProvidesPackage{package_template__keyval_option}[yyyy/mm/dd Additional information about the package_template__keyval_option package]
+% ------------------- 
+\ProvidesPackage{komaChapStyle}[2019/09/25 Chapter styles for the KOMA-Script bundle. Assumes that scrbook or scrreprt is loaded.]
 
 
 
@@ -30,22 +30,6 @@
 \RequirePackage{etoolbox}
 
 
-% Packages needed in the declared options
-% ---------------------------------------
-\RequirePackage[options]{package-name}
-
-
-% Commands declaration needed in the declared options
-% ---------------------------------------------------
-\newcommand*{cmd}{def}
-\renewcommand*{cmd}{def}
-\DeclareRobustCommand*{cmd}{def}
-
-\newcommand{cmd}{def}
-\renewcommand{cmd}{def}
-\DeclareRobustCommand{cmd}{def}
-
-
 
 %%       %%
 % OPTIONS %
@@ -54,31 +38,26 @@
 
 
 % Setup key=value options
-% -----------------------   *** Replace 'foobar' by the name that you want for a family of options ***
+% -----------------------
 \SetupKeyvalOptions{
-	family=foobar,
-	prefix=foobar@
+	family=kps,
+	prefix=kps@
 }
 
 
 % New options
 % -----------
-\DeclareStringOption[initialValue]{keyName}[default]
-
-\DeclareBoolOption[initialValue]{keyName}
-\DeclareComplementaryOption{keyName}{complementName}% Example: \DeclareBoolOption{draft}\DeclareComplementaryOption{final}{draft}
-
-\DeclareVoidOption{optionName}{code}
+\DeclareStringOption{chapterstyle}[default]
 
 
 % Management of not explicitly declared options (default: error)
 % ---------------------------------------------
-\DeclareDefaultOption{code}
+%\DeclareDefaultOption{code}
 
 
 % Processing the options
-% ----------------------   *** Replace 'foobar' by the name you chose in the setup ***
-\ProcessKeyvalOptions{foobar}\relax
+% ----------------------
+\ProcessKeyvalOptions{kps}\relax
 
 
 
@@ -90,33 +69,264 @@
 
 % Call to specific packages
 % -------------------------
-\RequirePackage[options]{package-name}
-\RequirePackageWithOptions{package-name}
+
+\RequirePackage{fmtcount}
 
 
-% Commands definition
+% Define size relative to the KOMA-Script 'headings' option (default: headings=big)
+\newcommand*{\tinierSizeHeadings}{\Large}
+\newcommand*{\lowerSizeHeadings}{\LARGE}
+\newcommand*{\normalSizeHeadings}{\huge}
+\newcommand*{\biggerSizeHeadings}{\Huge}
+\newcommand*{\hugerSizeHeadings}{\Huge}
+
+
+
+
+% Defining the styles
 % -------------------
-\newcommand*{cmd}{def}
-\renewcommand*{cmd}{def}
-\DeclareRobustCommand*{cmd}{def}
 
-\newcommand{cmd}{def}
-\renewcommand{cmd}{def}
-\DeclareRobustCommand{cmd}{def}
-
-
-% Use of declared StringOption
-% ----------------------------
-\ifdefstring{\foobar@keyName}{value}{% if true
-	% code if true
+% 'default'
+\ifdefstring{\kps@chapterstyle}{default}{% if true
+	\relax
 }{% else
-	% code if false
+	\relax
 }
 
-% Use of declared BoolOption
-% --------------------------
-\ifbool{foobar@keyName}{% if true
-	% code if true
-}{% else
-	% code if false
-}
+% 'standard' (standard class like style)
+\ifdefstring{\kps@chapterstyle}{standard}{% if true
+	% Write chapter prefix
+	\KOMAoption{chapterprefix}{true}
+	% Chapter: normal font, bold
+	\addtokomafont{chapter}{\normalfont\bfseries}
+	% Remove the dot after chapter prefix
+	\renewcommand*{\chapterformat}{%
+		\mbox{\chapappifchapterprefix{\nobreakspace}\thechapter
+			\IfUsePrefixLine{}{\enskip}}%
+	}
+}{}
+
+
+%%%%%
+% B %
+%%%%%
+
+% 'bianchi'
+\ifdefstring{\kps@chapterstyle}{bianchi}{% if true
+	% Write chapter prefix
+	\KOMAoption{chapterprefix}{true}
+	% Chapter prefix: italic, medium weight, lower size
+	\addtokomafont{chapterprefix}{\lowerSizeHeadings\mdseries\itshape}
+	% Chapter number: bigger than prefix, normal font, italic
+	\newcommand*{\thehackedchapter}{\normalSizeHeadings\normalfont\itshape\thechapter}
+	% Ragged: centered
+	\renewcommand{\raggedchapter}{\centering}
+	% Remove the dot after chapter prefix
+	\renewcommand*{\chapterformat}{%
+		\mbox{\chapappifchapterprefix{\nobreakspace}\thehackedchapter
+			\IfUsePrefixLine{}{\enskip}}%
+	}
+	% Draw lines before and after the chapter text
+	\renewcommand{\chapterlineswithprefixformat}[3]{%
+		\raggedchapter
+		#2%
+		\rule{\textwidth}{1pt}\\%
+		#3%
+		\rule{\textwidth}{1pt}
+	}
+}{}
+
+% 'brotherton' (note: relies on the fmtcount package)
+\ifdefstring{\kps@chapterstyle}{brotherton}{% if true
+	% Write chapter prefix
+	\KOMAoption{chapterprefix}{true}
+	% Chapter: normal font, bold
+	\addtokomafont{chapter}{\normalfont\bfseries}
+	% Remove the dot after chapter prefix, chapter number in text
+	\renewcommand*{\chapterformat}{%
+		\mbox{\chapappifchapterprefix{\nobreakspace}\Numberstring{chapter}
+			\IfUsePrefixLine{}{\enskip}}%
+	}
+	% Restore the default numbering (letters) for appendix
+	\newcommand*{\appendixmore}{%
+		\renewcommand*{\chapterformat}{%
+			\mbox{\chapappifchapterprefix{\nobreakspace}\thechapter
+				\IfUsePrefixLine{}{\enskip}}%
+		}
+	}
+}{}
+
+
+%%%%%
+% C %
+%%%%%
+
+% 'chappell'
+\ifdefstring{\kps@chapterstyle}{chappell}{% if true
+	% Write chapter prefix
+	\KOMAoption{chapterprefix}{true}
+	% Chapter: normal font, medium weight, smaller size
+	\addtokomafont{chapter}{\lowerSizeHeadings\normalfont\mdseries}
+	% Ragged: centered
+	\renewcommand{\raggedchapter}{\centering}
+	% Remove the dot after chapter prefix
+	\renewcommand*{\chapterformat}{%
+		\mbox{\chapappifchapterprefix{\nobreakspace}\thechapter
+			\IfUsePrefixLine{}{\enskip}}%
+	}
+	% Draw lines before the chapter text
+	\renewcommand{\chapterlineswithprefixformat}[3]{%
+		\raggedchapter
+		#2%
+		\rule{\textwidth}{1pt}\\%
+		\textit{#3}%
+	}
+}{}
+
+
+%%%%%
+% D %
+%%%%%
+
+% 'dash'
+\ifdefstring{\kps@chapterstyle}{dash}{% if true
+	% Write chapter prefix
+	\KOMAoption{chapterprefix}{true}
+	% Chapter: normal font, medium weight, lower size
+	\addtokomafont{chapter}{\lowerSizeHeadings\normalfont\mdseries}
+	% Ragged: centered
+	\renewcommand{\raggedchapter}{\centering}
+	% Remove Chapter/Appendix and the dot, surround the number with dash
+	\renewcommand*{\chapterformat}{%
+		\mbox{---\nobreakspace\thechapter\nobreakspace---
+			\IfUsePrefixLine{}{\enskip}}%
+	}
+}{}
+
+% 'dowding'
+\ifdefstring{\kps@chapterstyle}{dowding}{% if true
+	% Write chapter prefix
+	\KOMAoption{chapterprefix}{true}
+	% Chapter: normal font, medium weight, italic
+	\addtokomafont{chapter}{\normalfont\mdseries\itshape}
+	% Chapter prefix: medium weight, lower size
+	\addtokomafont{chapterprefix}{\tinierSizeHeadings\mdseries\upshape}
+	% Ragged: centered
+	\renewcommand{\raggedchapter}{\centering}
+	% Remove the dot after chapter prefix, chapter number in text
+	\renewcommand*{\chapterformat}{%
+		\mbox{\chapappifchapterprefix{\nobreakspace}\Numberstring{chapter}
+			\IfUsePrefixLine{}{\enskip}}%
+	}
+	% Restore the default numbering (letters) for appendix
+	\newcommand*{\appendixmore}{%
+		\renewcommand*{\chapterformat}{%
+			\mbox{\chapappifchapterprefix{\nobreakspace}\thechapter
+				\IfUsePrefixLine{}{\enskip}}%
+		}
+	}
+}{}
+
+
+%%%%%
+% G %
+%%%%%
+
+\ifdefstring{\kps@chapterstyle}{ger}{% if true
+	% Write chapter prefix
+	\KOMAoption{chapterprefix}{true}
+	% Chapter: normal font, bold
+	\addtokomafont{chapter}{\normalfont\bfseries}
+	% Remove the dot after chapter prefix
+	\renewcommand*{\chapterformat}{%
+		\mbox{\chapappifchapterprefix{\nobreakspace}\thechapter
+			\IfUsePrefixLine{}{\enskip}}%
+	}
+	% Draw lines before the chapter prefix and after the chapter text
+	\renewcommand{\chapterlineswithprefixformat}[3]{%
+		\rule{\textwidth}{1pt}\\%
+		\raggedchapter
+		#2%
+		#3%
+		\rule{\textwidth}{1pt}
+	}
+}{}
+
+
+%%%%%
+% H %
+%%%%%
+
+% 'hangnum'
+\ifdefstring{\kps@chapterstyle}{hangnum}{% if true
+	% Chapter: normal font, bold
+	\addtokomafont{chapter}{\normalfont\bfseries}
+	% Chapter number: in left margin
+	\renewcommand*{\chapterformat}{%
+		\makebox[0pt][r]{\thechapter\enskip}%
+	}
+}{}
+
+
+%%%%%
+% M %
+%%%%%
+
+% 'madsen'
+\ifdefstring{\kps@chapterstyle}{madsen}{% if true
+	% Write chapter prefix
+	\KOMAoption{chapterprefix}{true}
+	% Chapter prefix: normal font, small caps
+	\addtokomafont{chapterprefix}{\lowerSizeHeadings\normalfont\scshape}
+	% Chapter number: bigger than prefix, normal font, italic
+	\newcommand*{\thehackedchapter}{\hugerSizeHeadings\normalfont\bfseries\thechapter}
+	% Ragged: aligned to the right margin
+	\renewcommand{\raggedchapter}{\raggedleft}
+	% Remove the dot after chapter prefix, chapter number in the right margin
+	\renewcommand*{\chapterformat}{%
+		\mbox{\chapapp}%
+		\makebox[0pt][l]{\nobreakspace\thehackedchapter}%
+	}
+	% Draw lines before the chapter text
+	\renewcommand{\chapterlineswithprefixformat}[3]{%
+		\raggedchapter
+		#2%
+		\rule{\textwidth}{1pt}\\%
+		\textit{#3}%
+	}
+}{}
+
+
+%%%%%
+% V %
+%%%%%
+
+\ifdefstring{\kps@chapterstyle}{VZ23}{% if true
+	% Write chapter prefix
+	\KOMAoption{chapterprefix}{true}
+	% Chapter: normal font, bold
+	\addtokomafont{chapter}{\normalfont\bfseries}
+	% Ragged: centered
+	\renewcommand{\raggedchapter}{\centering}
+	% Remove the dot and the chapter prefix, keep the chapter number
+	\renewcommand*{\chapterformat}{%
+		\mbox{\thechapter\IfUsePrefixLine{}{\enskip}}%
+	}
+	% Draw lines before the chapter text
+	\renewcommand{\chapterlineswithprefixformat}[3]{%
+		\raggedchapter
+		#2%
+		\rule{\textwidth}{1pt}\\%
+		\textit{#3}%
+	}
+}{}
+
+
+
+
+% TEMPLATE
+% --------
+
+%\ifdefstring{\kps@chapterstyle}{style}{% if true
+%	%TODO
+%}{}
