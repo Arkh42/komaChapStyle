@@ -50,6 +50,8 @@
 \DeclareStringOption{chapterstyle}[default]
 \DeclareStringOption{headings}
 
+\DeclareBoolOption[false]{framedChapterTitle}
+
 
 % Management of not explicitly declared options (default: error)
 % ---------------------------------------------
@@ -150,14 +152,8 @@
 		\mbox{\chapappifchapterprefix{\nobreakspace}\thehackedchapter
 			\IfUsePrefixLine{}{\enskip}}%
 	}
-	% Draw lines before and after the chapter text
-	\renewcommand{\chapterlineswithprefixformat}[3]{%
-		\raggedchapter
-		#2%
-		\rule{\textwidth}{1pt}\\%
-		#3%
-		\rule{\textwidth}{1pt}
-	}
+	% Chapter title: frame
+	\kps@framedChapterTitletrue
 }{}
 
 % 'brotherton' (note: relies on the fmtcount package)
@@ -261,14 +257,8 @@
 				\IfUsePrefixLine{}{\enskip}}%
 		}
 	}
-	% Draw lines before and after the chapter text
-	\renewcommand{\chapterlineswithprefixformat}[3]{%
-		\raggedchapter
-		#2%
-		\rule{\textwidth}{1pt}\\%
-		#3%
-		\rule{\textwidth}{1pt}
-	}
+	% Chapter title: frame
+	\kps@framedChapterTitletrue
 }{}
 
 % 'dowding'
@@ -356,14 +346,8 @@
 		\mbox{\chapapp}%
 		\makebox[0pt][l]{\nobreakspace\thehackedchapter}%
 	}
-	% Draw lines before and after the chapter text
-	\renewcommand{\chapterlineswithprefixformat}[3]{%
-		\raggedchapter
-		#2%
-		\rule{\textwidth}{1pt}\\%
-		#3%
-		\rule{\textwidth}{1pt}
-	}
+	% Chapter title: frame
+	\kps@framedChapterTitletrue
 }{}
 
 
@@ -417,6 +401,26 @@
 		#2%
 		\rule{\textwidth}{1pt}\\%
 		\textit{#3}%
+	}
+}{}
+
+
+
+% Chapter style: framed chapter title
+\ifbool{kps@framedChapterTitle}{% if true
+	% Draw lines before and after the chapter text
+	\renewcommand{\chapterlinesformat}[3]{%
+		\raggedchapter
+		\rule{\textwidth}{1pt}\nopagebreak\\%
+		\@hangfrom{#2}#3\nopagebreak%
+		\rule{\textwidth}{1pt}
+	}
+	\renewcommand{\chapterlineswithprefixformat}[3]{%
+		\raggedchapter
+		#2%
+		\rule{\textwidth}{1pt}\nopagebreak\\%
+		#3\nopagebreak%
+		\rule{\textwidth}{1pt}
 	}
 }{}
 
