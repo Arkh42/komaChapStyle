@@ -29,4 +29,6 @@ Styles coming from the 'memoir' that are currently available with this package a
 - hangnum
 - lyhne
 - madsen
+- pedersen
 - VZ23
+- wilsondob
