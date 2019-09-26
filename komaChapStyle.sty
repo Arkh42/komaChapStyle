@@ -207,6 +207,18 @@
 	}
 }{}
 
+% 'culver'
+\ifdefstring{\kps@chapterstyle}{culver}{% if true
+	% Chapter: normal font, bold, lower size
+	\addtokomafont{chapter}{\lowerSizeHeadings\normalfont\bfseries}
+	% Ragged: centered
+	\renewcommand{\raggedchapter}{\centering}
+	% Chapter numbering: Roman
+	\renewcommand*{\thechapter}{\Roman{chapter}}
+	% Remove the dot after chapter prefix
+	\renewcommand*{\chapterformat}{\mbox{\thechapter\enskip}}
+}{}
+
 
 %%%%%
 % D %
@@ -224,6 +236,38 @@
 	\renewcommand*{\chapterformat}{%
 		\mbox{---\nobreakspace\thechapter\nobreakspace---
 			\IfUsePrefixLine{}{\enskip}}%
+	}
+}{}
+
+% 'demo'
+\ifdefstring{\kps@chapterstyle}{demo}{% if true
+	% Write chapter prefix
+	\KOMAoption{chapterprefix}{true}
+	% Chapter prefix: normal font, bold, centered
+	\addtokomafont{chapterprefix}{\normalfont\bfseries\centering}
+	% Chapter: medium weight
+	\addtokomafont{chapter}{\mdseries}
+	% Ragged: aligned to the right margin
+	\renewcommand{\raggedchapter}{\raggedleft}
+	% Remove Chapter/Appendix and the dot, number in text, 
+	\renewcommand*{\chapterformat}{%
+		\mbox{\Numberstring{chapter}
+			\IfUsePrefixLine{}{\enskip}}%
+	}
+	% Restore the default numbering (letters) for appendix
+	\newcommand*{\appendixmore}{%
+		\renewcommand*{\chapterformat}{%
+			\mbox{\thechapter
+				\IfUsePrefixLine{}{\enskip}}%
+		}
+	}
+	% Draw lines before and after the chapter text
+	\renewcommand{\chapterlineswithprefixformat}[3]{%
+		\raggedchapter
+		#2%
+		\rule{\textwidth}{1pt}\\%
+		#3%
+		\rule{\textwidth}{1pt}
 	}
 }{}
 
@@ -288,6 +332,37 @@
 	% Chapter number: in left margin
 	\renewcommand*{\chapterformat}{%
 		\makebox[0pt][r]{\thechapter\enskip}%
+	}
+}{}
+
+
+%%%%%
+% L %
+%%%%%
+
+\ifdefstring{\kps@chapterstyle}{lyhne}{% if true
+	% Write chapter prefix
+	\KOMAoption{chapterprefix}{true}
+	% Chapter prefix: normal font, small caps
+	\addtokomafont{chapterprefix}{\lowerSizeHeadings\normalfont\scshape}
+	% Chapter number: bigger than prefix, normal font, italic
+	\newcommand*{\thehackedchapter}{\normalSizeHeadings\normalfont\bfseries\thechapter}
+	% Chapter: lower font
+	\addtokomafont{chapter}{\lowerSizeHeadings}
+	% Ragged: aligned to the right margin
+	\renewcommand{\raggedchapter}{\raggedleft}
+	% Remove the dot after chapter prefix, chapter number in the right margin
+	\renewcommand*{\chapterformat}{%
+		\mbox{\chapapp}%
+		\makebox[0pt][l]{\nobreakspace\thehackedchapter}%
+	}
+	% Draw lines before and after the chapter text
+	\renewcommand{\chapterlineswithprefixformat}[3]{%
+		\raggedchapter
+		#2%
+		\rule{\textwidth}{1pt}\\%
+		#3%
+		\rule{\textwidth}{1pt}
 	}
 }{}
 

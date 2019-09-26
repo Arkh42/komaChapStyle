@@ -9,3 +9,24 @@ Many styles are described in the [class documentation](http://mirror.koddos.net/
 More styles have been collected by Lars Madsen and presented [here](ftp://ftp.dante.de/tex-archive/info/MemoirChapStyles/MemoirChapStyles.pdf).
 
 The goal of this repository is to offer a similar feature to the KOMA-Script bundle.
+
+
+## Styles available with this package
+
+Basic styles are:
+- default, which keeps the default chapter heading style from KOMA-Script;
+- standard, which mimics the default chapter heading style standard classes.
+
+Styles coming from the 'memoir' that are currently available with this package are:
+- bianchi
+- brotherton
+- chappell
+- culver
+- dash
+- demo
+- dowding
+- ger
+- hangnum
+- lyhne
+- madsen
+- VZ23
