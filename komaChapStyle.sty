@@ -48,6 +48,7 @@
 % New options
 % -----------
 \DeclareStringOption{chapterstyle}[default]
+\DeclareStringOption{headings}
 
 
 % Management of not explicitly declared options (default: error)
@@ -73,14 +74,37 @@
 \RequirePackage{fmtcount}
 
 
-% Define size relative to the KOMA-Script 'headings' option (default: headings=big)
+% Define size relative to the KOMA-Script 'headings' option
+% ---------------------------------------------------------
+
+% (default: headings=big)
 \newcommand*{\tinierSizeHeadings}{\Large}
 \newcommand*{\lowerSizeHeadings}{\LARGE}
 \newcommand*{\normalSizeHeadings}{\huge}
 \newcommand*{\biggerSizeHeadings}{\Huge}
 \newcommand*{\hugerSizeHeadings}{\Huge}
 
+\ifdefstring{\kps@headings}{big}{% if true
+	\relax
+}{}
 
+% Small size font
+\ifdefstring{\kps@headings}{normal}{% if true
+	\renewcommand*{\tinierSizeHeadings}{\large}
+	\renewcommand*{\lowerSizeHeadings}{\Large}
+	\renewcommand*{\normalSizeHeadings}{\LARGE}
+	\renewcommand*{\biggerSizeHeadings}{\huge}
+	\renewcommand*{\hugerSizeHeadings}{\Huge}
+}{}
+
+% Even smaller
+\ifdefstring{\kps@headings}{small}{% if true
+	\renewcommand*{\tinierSizeHeadings}{\normalsize}
+	\renewcommand*{\lowerSizeHeadings}{\large}
+	\renewcommand*{\normalSizeHeadings}{\Large}
+	\renewcommand*{\biggerSizeHeadings}{\LARGE}
+	\renewcommand*{\hugerSizeHeadings}{\huge}
+}{}
 
 
 % Defining the styles
