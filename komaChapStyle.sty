@@ -87,8 +87,9 @@
 \newcommand*{\lowerSizeHeadings}{\LARGE}
 \newcommand*{\normalSizeHeadings}{\huge}
 \newcommand*{\biggerSizeHeadings}{\Huge}
-\newcommand*{\hugerSizeHeadings}{\fontsize{30}{36}}
-\newcommand*{\giganticSizeHeadings}{\fontsize{40}{48}}
+\newcommand*{\hugerSizeHeadings}{\fontsize{30}{36}\selectfont}
+\newcommand*{\giganticSizeHeadings}{\fontsize{40}{48}\selectfont}
+\newcommand*{\gargantuaSizeHeadings}{\fontsize{60}{72}\selectfont}
 
 \ifdefstring{\kps@headings}{big}{% if true
 	\relax
@@ -379,6 +380,26 @@
 
 
 %%%%%
+% P %
+%%%%%
+
+\ifdefstring{\kps@chapterstyle}{pedersen}{% if true
+	% Write chapter prefix
+	\KOMAoption{chapterprefix}{true}
+	% Chapter: normal font, lower font, italic
+	\addtokomafont{chapter}{\normalfont\lowerSizeHeadings\itshape}
+	% Chapter prefix: right-aligned
+	\addtokomafont{chapterprefix}{\raggedleft}
+	% Chapter number: bigger than prefix
+	\newcommand*{\thehackedchapter}{\gargantuaSizeHeadings\thechapter}
+	% Remove the dot and the chapter prefix, chapter number in the right margin
+	\renewcommand*{\chapterformat}{%
+		\makebox[0pt][l]{\nobreakspace\thehackedchapter}%
+	}
+}{}
+
+
+%%%%%
 % V %
 %%%%%
 
@@ -395,6 +416,23 @@
 	}
 	% Chapter title: overlined
 	\kps@overlinedChapterTitletrue
+}{}
+
+
+%%%%%
+% W %
+%%%%%
+
+\ifdefstring{\kps@chapterstyle}{wilsondob}{% if true
+	% Chapter: normal font, italic
+	\addtokomafont{chapter}{\normalfont\normalSizeHeadings\itshape}
+	% Ragged: right-aligned
+	\renewcommand{\raggedchapter}{\raggedleft}
+	% Remove the dot after chapter prefix
+	\renewcommand*{\chapterformat}{%
+		\mbox{\chapappifchapterprefix{\nobreakspace}\thechapter
+			\IfUsePrefixLine{}{\enskip\enskip}}%
+	}
 }{}
 
 
