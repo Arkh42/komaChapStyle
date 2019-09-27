@@ -77,6 +77,9 @@
 % -------------------------
 
 \RequirePackage{fmtcount}
+\RequirePackage{xcolor}
+
+\definecolor{ChapGrey}{rgb}{0.6,0.6,0.6}
 
 
 % Define size relative to the KOMA-Script 'headings' option
@@ -161,6 +164,25 @@
 	}
 	% Chapter title: frame
 	\kps@framedChapterTitletrue
+}{}
+
+\ifdefstring{\kps@chapterstyle}{BigNum}{% if true
+	% Write chapter prefix
+	\KOMAoption{chapterprefix}{true}
+	% Increase space between chapter prefix and chapter title
+	\RedeclareSectionCommand[innerskip=1.5\baselineskip]{chapter}
+	% Chapter: italic
+	\addtokomafont{chapter}{\itshape}
+	% Chapter prefix: lower font
+	\addtokomafont{chapterprefix}{\tinierSizeHeadings}
+	% Chapter number: bigger than prefix, upright
+	\newcommand*{\thehackedchapter}{\gargantuaSizeHeadings\upshape\thechapter}
+	% Remove the dot after chapter prefix, chapter number on new line
+	\renewcommand*{\chapterformat}{%
+		\mbox{\chapappifchapterprefix{}}\par\nobreak\vskip 2ex
+		\mbox{\enskip\thehackedchapter
+			\IfUsePrefixLine{}{\enskip}}%
+	}
 }{}
 
 % 'brotherton' (note: relies on the fmtcount package)
@@ -312,6 +334,25 @@
 	}
 	% Chapter title: frame
 	\kps@framedChapterHeadtrue
+}{}
+
+\ifdefstring{\kps@chapterstyle}{GreyNum}{% if true
+	% Write chapter prefix
+	\KOMAoption{chapterprefix}{true}
+	% Increase space between chapter prefix and chapter title
+	\RedeclareSectionCommand[innerskip=1.5\baselineskip]{chapter}
+	% Chapter: italic
+	\addtokomafont{chapter}{\itshape}
+	% Chapter prefix: lower font
+	\addtokomafont{chapterprefix}{\tinierSizeHeadings}
+	% Chapter number: bigger than prefix, grey color, upright
+	\newcommand*{\thehackedchapter}{\gargantuaSizeHeadings\upshape\color{ChapGrey}\thechapter}
+	% Remove the dot after chapter prefix, chapter number on new line
+	\renewcommand*{\chapterformat}{%
+		\mbox{\chapappifchapterprefix{}}\par\nobreak\vskip 2ex
+		\mbox{\enskip\thehackedchapter
+			\IfUsePrefixLine{}{\enskip}}%
+	}
 }{}
 
 

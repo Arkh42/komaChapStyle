@@ -17,8 +17,9 @@ Basic styles are:
 - default, which keeps the default chapter heading style from KOMA-Script;
 - standard, which mimics the default chapter heading style standard classes.
 
-Styles coming from the 'memoir' that are currently available with this package are:
+Styles coming from or inspired by the 'memoir' class that are currently available with this package are:
 - bianchi
+- BigNum
 - brotherton
 - chappell
 - culver
@@ -26,6 +27,7 @@ Styles coming from the 'memoir' that are currently available with this package a
 - demo
 - dowding
 - ger
+- GreyNum
 - hangnum
 - lyhne
 - madsen
